@@ -69,7 +69,57 @@ If the request is a GET, the values are extracted from the query parameters usin
 
 This file is designed to load the machine learning model and perform predictions based on the user's input for a house's price. The model is trained on historical data and saved as a pickle file. Here's an explanation of the file and its components.
 
+
+
 It loads the list of column names from a columns json file. The columns.json contains the names of all the features used for training the model. The first four columns represent features like No of bath,No of bedroom, and sqft. The remaining columns represent the different locations.
 
 The trained model (house_price_prediction.pickle) is loaded into __model using pickle.load().get_location_names() This function returns the list of location names (__locations). These are the different locations that the model has been trained on and are used to predict house prices based on location.
+
+he Flask Server.py acts as a web interface that calls these functions when a user requests price predictions.
+The model is loaded and used in the backend to calculate the home price based on the user input (location, square footage, number of rooms, etc.).
+This file provides the underlying logic for calculating the price, while the Flask app serves as the API that communicates with users.
+
+# Frontened
+
+For Frontened i used Html, Css, Javascript to connect with the backend.
+
+## HTML
+The HTML structure consists of a form that collects input from the user regarding various property details like square footage, number of bedrooms, bathrooms, and location. After that, it shows the estimated price based on the prediction model when the user clicks the "Estimate Price" button.
+
+### External JS and CSS
+jQuery: The page uses jQuery, which is loaded from a CDN for easier DOM manipulation and AJAX calls.
+app.js: This is the custom JavaScript file where the functionality of the page (e.g., sending the input data to the server and receiving the price prediction) will be implemented.
+app.css: The custom stylesheet to style the page.
+
+## JavaScript
+This JavaScript code provides the functionality to interact with the home price prediction form, sending the user input to the Flask server and displaying the predicted price.
+
+### getBathValue()
+This function retrieves the selected number of bathrooms from the radio buttons (with the name uiBathrooms).
+It loops through all radio buttons, checking if they are selected (checked). If a button is checked, it returns the number corresponding to the selected bathroom option.
+i is the index of the checked radio button, and parseInt(i) + 1 converts it to a number representing the bathroom count (e.g., i = 0 would correspond to 1 bathroom).
+If no radio button is selected, it returns -1 to indicate an invalid value.
+
+### getBHKValue()
+This function is similar to getBathValue() but retrieves the number of bedrooms (BHK) from the radio buttons with the name uiBHK.
+It checks which radio button is selected, and returns the corresponding number of bedrooms.
+If no button is selected, it returns -1.
+
+### onClickedEstimatePrice()
+When the "Estimate Price" button is clicked:
+This function is triggered.
+It retrieves the values of the input fields: square footage (uiSqft), number of bedrooms (getBHKValue()), number of bathrooms (getBathValue()), and location (uiLocations).
+It sends a POST request to the Flask server (http://127.0.0.1:5000/predict_home_price) with the input values as data.
+The server will respond with an estimated price, which is displayed in the element with the ID uiEstimatedPrice.
+The price is shown in the format XX Lakh (Lakh is an Indian unit for 100,000).
+
+### onPageLoad()
+The onPageLoad function is called.
+It sends a GET request to the Flask server (http://127.0.0.1:5000/get_location_names) to fetch the list of available locations for the home.
+Upon receiving the response, it updates the uiLocations dropdown with the available locations.
+It uses jQuery's empty() function to clear any existing options in the dropdown and then appends the new options using a loop.
+
+The JavaScript code interacts with the HTML form and makes AJAX calls to the Flask backend.
+It collects user input (square footage, number of bedrooms, number of bathrooms, and location), sends it to the Flask API, and then displays the predicted price returned by the API on the webpage.
+It also loads the list of available locations when the page loads and updates the location dropdown.
 

@@ -122,4 +122,3 @@ It uses jQuery's empty() function to clear any existing options in the dropdown 
 The JavaScript code interacts with the HTML form and makes AJAX calls to the Flask backend.
 It collects user input (square footage, number of bedrooms, number of bathrooms, and location), sends it to the Flask API, and then displays the predicted price returned by the API on the webpage.
 It also loads the list of available locations when the page loads and updates the location dropdown.
-
